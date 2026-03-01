@@ -15,9 +15,6 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.10.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "engines": {
     "node": ">=20"
   }

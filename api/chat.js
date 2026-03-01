@@ -34,8 +34,8 @@ export default async function handler(req, res) {
       reply: JSON.stringify(completion),
     })
   } catch (err) {
-    res.status(500).json({
-      reply: "🔥 The flames failed me. Try again.",
+    return res.status(500).json({
+      reply: err?.message || JSON.stringify(err),
     })
   }
 }

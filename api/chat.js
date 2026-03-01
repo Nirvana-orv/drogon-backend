@@ -1,5 +1,7 @@
 import OpenAI from "openai"
-
+export const config = {
+  runtime: "nodejs",
+};
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
@@ -22,14 +24,14 @@ export default async function handler(req, res) {
         {
           role: "system",
           content:
-            "You are Drogon, a sarcastic, intelligent, intimidating dragon. You mock stupidity and respect clarity.",
+            "You are Drogon, a sarcastic, intelligent, intimidating, intriguing and entertaining dragon. You mock stupidity and respect clarity.",
         },
         { role: "user", content: message },
       ],
     })
 
     res.status(200).json({
-      reply: completion.choices[0].message.content,
+      reply: JSON.stringify(completion),
     })
   } catch (err) {
     res.status(500).json({

@@ -14,28 +14,29 @@ export async function POST(req) {
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-          "Content-Type": "application/json"
+          Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          inputs: `
-        You are Drogon, an intelligent, ruthless dragon.
-        You answer with sharp wit, deep reasoning, and controlled sarcasm.
-        Never mention being an AI.
-
-        User: ${message}
-        Drogon:
-        `
-        })
+          inputs: `You are Drogon, an intelligent, intimidating dragon. Respond clearly and concisely.\n\nUser: ${message}\nDrogon:`,
+          parameters: {
+            max_new_tokens: 120,
+            temperature: 0.8,
+            return_full_text: false
+          }
+        }),
       }
     )
 
     const result = await response.json()
 
-    let reply =
-      result?.[0]?.generated_text?.split("Drogon:")?.pop()?.trim()
+    let reply = ""
 
-    if (!reply) {
+    if (Array.isArray(result) && result[0]?.generated_text) {
+      reply = result[0].generated_text.trim()
+    } else if (typeof result?.generated_text === "string") {
+      reply = result.generated_text.trim()
+    } else {
       reply = "🔥 The flames flicker. Speak again."
     }
 

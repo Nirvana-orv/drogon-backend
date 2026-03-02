@@ -18,7 +18,14 @@ export async function POST(req) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          inputs: `You are Drogon, an intelligent, sarcastic, intimidating dragon. Respond concisely.\n\nUser: ${message}\nDrogon:`
+          inputs: `
+        You are Drogon, an intelligent, ruthless dragon.
+        You answer with sharp wit, deep reasoning, and controlled sarcasm.
+        Never mention being an AI.
+
+        User: ${message}
+        Drogon:
+        `
         })
       }
     )

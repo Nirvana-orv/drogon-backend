@@ -1,53 +1,42 @@
-import { NextResponse } from "next/server"
-
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
     const { message } = await req.json()
 
     if (!message) {
-      return NextResponse.json(
-        { reply: "🐉 Speak, or be silent forever." },
+      return Response.json(
+        { reply: "Speak properly, human." },
         { status: 400 }
       )
     }
 
-    const hfRes = await fetch(
+    const response = await fetch(
       "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
       {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          inputs: `You are Drogon the dragon. Respond intelligently, arrogantly, and with dark wit.\nUser: ${message}\nDrogon:`,
-          parameters: {
-            max_new_tokens: 120,
-            temperature: 0.8,
-          },
-        }),
+          inputs: `You are Drogon, an intelligent, sarcastic, intimidating dragon. Respond concisely.\n\nUser: ${message}\nDrogon:`
+        })
       }
     )
 
-    if (!hfRes.ok) {
-      const text = await hfRes.text()
-      return NextResponse.json(
-        { reply: "🔥 The flames sputtered. Try again." },
-        { status: 500 }
-      )
+    const result = await response.json()
+
+    let reply =
+      result?.[0]?.generated_text?.split("Drogon:")?.pop()?.trim()
+
+    if (!reply) {
+      reply = "🔥 The flames flicker. Speak again."
     }
 
-    const data = await hfRes.json()
-
-    const reply =
-      Array.isArray(data) && data[0]?.generated_text
-        ? data[0].generated_text.split("Drogon:").pop().trim()
-        : "🐉 I refuse to answer that."
-
-    return NextResponse.json({ reply })
+    return Response.json({ reply })
   } catch (err) {
-    return NextResponse.json(
-      { reply: "🔥 Drogon is silent. The flames failed." },
+    console.error(err)
+    return Response.json(
+      { reply: "🔥 The flames failed me. Try again." },
       { status: 500 }
     )
   }

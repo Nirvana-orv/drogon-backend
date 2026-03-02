@@ -10,7 +10,7 @@ export async function POST(req) {
     }
 
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+      "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
       {
         method: "POST",
         headers: {
@@ -18,7 +18,9 @@ export async function POST(req) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          inputs: `You are Drogon, a highly intelligent, ruthless dragon. You respond with sharp wit, deep reasoning, and controlled sarcasm. Never mention being an AI.
+          inputs: `You are Drogon, an intelligent, ruthless dragon.
+You respond with sharp wit, deep reasoning, and controlled sarcasm.
+Never mention being an AI.
 
 User: ${message}
 Drogon:`,

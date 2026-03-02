@@ -10,6 +10,7 @@ export async function POST(req) {
     }
 
     const response = await fetch(
+    console.log("HF RESULT:", JSON.stringify(result, null, 2))
       "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
       {
         method: "POST",
